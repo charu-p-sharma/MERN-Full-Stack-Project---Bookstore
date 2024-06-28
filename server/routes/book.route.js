@@ -1,11 +1,10 @@
 import express from 'express';
-import route from express.Router;
 import Book from '../models/book.model.js';
 
-const router = route();
+const router = express.Router();
 
 //Get all books
-router.get("/books", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const books = await Book.find();
         res.json(books);
@@ -15,7 +14,7 @@ router.get("/books", async (req, res) => {
 });
 
 //Add a new book
-router.post("/books", async (req, res) => {
+router.post("/", async (req, res) => {
     const book = new Book({
         title: req.body.title,
         author: req.body.author,
@@ -30,7 +29,7 @@ router.post("/books", async (req, res) => {
 });
 
 //To search for books
-router.get("/books/search", async (req, res) => {
+router.get("/search", async (req, res) => {
     const { title } = req.query
     try {
         const books = await Book.find({ title: newReg(title, "i") })
@@ -39,3 +38,5 @@ router.get("/books/search", async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 })
+
+export default router;
